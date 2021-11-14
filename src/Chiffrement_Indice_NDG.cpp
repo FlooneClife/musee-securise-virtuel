@@ -8,6 +8,60 @@ void copie(int nTaille, OCTET* ImgIn, OCTET* ImgOut){
        ImgOut[i]= ImgIn[i];
 }
 
+int genKey(int nTaille){
+  int res;
+  res = rand()%nTaille;
+ //printf( "Résultat de la génération pseudo aléatoire: %i \n",res);
+ return res;
+}
+
+bool verifTab(int tabKey[], int taille){
+  bool x = false;
+  for (int i=0;i<taille;i++){ 
+    for (int j=0;j<taille;j++){
+      if ( i != j && tabKey[i] == tabKey[j] )
+        x=true;
+     }
+  }
+printf("%s", x ? "true \n " : "false \n ");
+return x;
+}
+
+void afficheTab(int tabKey[], int taille){
+  for (int i=0;i<taille;i++){ 
+  printf(" Tab [%i] = %i \n", i, tabKey[i]);
+  }
+}
+
+
+void aleatKey(int tabKey[],int taille){
+
+  for (int i=0;i<taille;i++){
+    tabKey[i]=-1;
+  }
+ 
+ for (int i=0;i<taille;i++){
+    int rand = genKey(taille);
+    bool existe=true;
+    int cpt = 0;
+      while( existe  ){
+
+        for (int j=0;j<taille;j++){
+           if (rand == tabKey[j] && verifTab(tabKey,taille) ){
+            rand = genKey(taille);
+
+           // printf("test i %i j %i rand %i \n",i ,j,rand);
+           }        
+        }
+        cpt++;
+        if (cpt == 25) existe = false;
+      }
+
+    tabKey[i]=rand;
+  }
+
+}
+
 void EchangeLigne(int nK ,int tabKey[], int nW ,  OCTET* ImgIn, OCTET* ImgOut, int i, int j){
 
 	int tabKeyCopie[nK];
@@ -43,6 +97,8 @@ void ChiffrementIndice(int nW, int nH, int tabKey[], int nTabKey, OCTET* ImgIn, 
 	 	i+=nTabKey;
 	 	
 	}
+//Piste: pour gérer le fait que la clé soit "plus courte" que l'image, 
+// on peut refaire une clé aléatoire avec le nb de ligne qui reste 
 
 //	EchangeLigne(taille,tabKey, nW ,ImgIn,ImgOut,  i,  j);
 
@@ -110,21 +166,31 @@ int main(int argc, char* argv[])
 
    allocation_tableau(ImgOut, OCTET, nTaille);
    allocation_tableau(ImgOutC, OCTET, nTaille);
+
+  int key1 = 97410;
+  srand(key1);
+
+  int tabKey[100];
+  aleatKey(tabKey,100);
  
- int tabKey[10]={9,7,4,1,0,8,3,5,2,6};
+  printf(" Dernière vérif : \n");
+  verifTab(tabKey,100);
+  afficheTab(tabKey,100);
+
+ int tabKey2[10]={9,7,4,1,0,8,3,5,2,6};
  
  printf("Chiffrement Indice \n");
  copie( nTaille, ImgIn, ImgOut);
- ChiffrementIndice( nW,  nH,  tabKey,10, ImgIn, ImgOut);
- char nomOut[250]= "ChiffrementLigne.pgm";
+ ChiffrementIndice( nW,  nH,  tabKey,100, ImgIn, ImgOut);
+ char nomOut[250]= "Chiffrement.pgm";
  ecrire_image_pgm(nomOut, ImgOut, nH,  nW );
 
-/*
+
   printf("Déchiffrement Indice \n");
- DeChiffrementIndice( nW,  nH,  tabKey,10, ImgOut, ImgOutC);
-  char nomOut1[250]= "DeChiffrementLigne.pgm";
-  ecrire_image_pgm(nomOut1, ImgOut, nH,  nW );
-*/
+ DeChiffrementIndice( nW,  nH,  tabKey,100, ImgOut, ImgOutC);
+  char nomOut1[250]= "Dechiffrement.pgm";
+  ecrire_image_pgm(nomOut1, ImgOutC, nH,  nW );
+
 
   free(ImgIn);
   return 1;
