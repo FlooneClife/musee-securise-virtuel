@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
     allocation_tableau(ImgOut, OCTET, nTaille3);
 
-    float angle = 90.0f;
+    float angle = 60.0f;
     int translationX = 30 * 3;
     int translationY = 30 * 3;
     float c = cos(angle * PI / 180.0f);
@@ -39,15 +39,21 @@ int main(int argc, char *argv[])
     float centreX = (float)(nW * 3.0) / 2.0;
     float centreY = (float)(nH * 3.0) / 2.0;
 
+    int intX, intY;
+
     for (int i = 0; i < nH * 3; i+=3) {
         for(int j = 0; j < nW * 3; j+=3) {
             x = c * (float)(j - centreY) - s * (float)(i - centreX) + centreX;
             y = s * (float)(j - centreY) + c * (float)(i - centreX) + centreY;
+            // printf("%d %d\n", (int)x, (int)y);
+            intX = (int)x - ((int)x % 3);
+            intY = (int)y - ((int)y % 3);
+            // printf("%d %d\n", intX, intY);
 
             if((x >= 0 && x < nH * 3) && (y >= 0 && y < nW * 3)) {
-                ImgOut[i * nW + j] = ImgIn[(int)y * nW + (int)x];
-                ImgOut[i * nW + (j+1)] = ImgIn[(int)y * nW + (int)(x+1)];
-                ImgOut[i * nW + (j+2)] = ImgIn[(int)y * nW + (int)(x+2)];
+                ImgOut[i * nW + j] = ImgIn[intY * nW + intX];
+                ImgOut[i * nW + (j+1)] = ImgIn[intY * nW + intX + 1];
+                ImgOut[i * nW + (j+2)] = ImgIn[intY * nW + intX + 2];
             } else {
                 ImgOut[i * nW + j] = 128;
                 ImgOut[i * nW + (j+1)] = 128;
