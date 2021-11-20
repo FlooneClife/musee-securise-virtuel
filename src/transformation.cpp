@@ -9,15 +9,17 @@ int main(int argc, char *argv[])
 {
     char cNomImgLue[250], cNomImgEcrite[250];
     int nH, nW, nTaille, nR, nG, nB;
+    float angle;
 
-    if (argc != 3)
+    if (argc != 4)
     {
-        printf("Usage: ImageIn.ppm ImageOut.ppm\n");
+        printf("Usage: ImageIn.ppm ImageOut.ppm angle\n");
         exit(1);
     }
 
     sscanf(argv[1], "%s", cNomImgLue);
     sscanf(argv[2], "%s", cNomImgEcrite);
+    sscanf(argv[3], "%f", &angle);
 
     OCTET *ImgIn, *ImgOut;
 
@@ -29,7 +31,6 @@ int main(int argc, char *argv[])
     lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
     allocation_tableau(ImgOut, OCTET, nTaille3);
 
-    float angle = 60.0f;
     int translationX = 30 * 3;
     int translationY = 30 * 3;
     float c = cos(angle * PI / 180.0f);
@@ -45,10 +46,8 @@ int main(int argc, char *argv[])
         for(int j = 0; j < nW * 3; j+=3) {
             x = c * (float)(j - centreY) - s * (float)(i - centreX) + centreX;
             y = s * (float)(j - centreY) + c * (float)(i - centreX) + centreY;
-            // printf("%d %d\n", (int)x, (int)y);
             intX = (int)x - ((int)x % 3);
             intY = (int)y - ((int)y % 3);
-            // printf("%d %d\n", intX, intY);
 
             if((x >= 0 && x < nH * 3) && (y >= 0 && y < nW * 3)) {
                 ImgOut[i * nW + j] = ImgIn[intY * nW + intX];
