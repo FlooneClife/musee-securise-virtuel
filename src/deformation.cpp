@@ -9,15 +9,19 @@ int main(int argc, char *argv[])
 {
     char cNomImgLue[250], cNomImgEcrite[250];
     int nH, nW, nTaille, nR, nG, nB;
+    float alpha;
+    float beta;
 
-    if (argc != 3)
+    if (argc != 5)
     {
-        printf("Usage: ImageIn.ppm ImageOut.ppm\n");
+        printf("Usage: ImageIn.ppm ImageOut.ppm alpha beta\n");
         exit(1);
     }
 
     sscanf(argv[1], "%s", cNomImgLue);
     sscanf(argv[2], "%s", cNomImgEcrite);
+    sscanf(argv[3], "%f", &alpha);
+    sscanf(argv[4], "%f", &beta);
 
     OCTET *ImgIn, *ImgOut;
 
@@ -29,8 +33,6 @@ int main(int argc, char *argv[])
     lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
     allocation_tableau(ImgOut, OCTET, nTaille3);
 
-    float alpha = -0.3f;
-    float beta = -0.2f;
     float x, y;
 
     float centreX = (float)(nW * 3.0) / 2.0;
