@@ -63,23 +63,23 @@ void BlocV2(int nH, int nW,OCTET* ImgIn, OCTET* ImgOut){
    int sumR;
    int sumV;
    int sumB;
-    for (int i = 0; i < nH * 3 - 48 ; i += 48){
+    for (int i = 0; i < nH * 3  ; i += 48){
      
-      for (int j = 0; j < nW * 3 - 48 ;  j += 48){ 
+      for (int j = 0; j < nW * 3  ;  j += 48){ 
         sumR =0;
         sumV =0;
         sumB =0;
 
-      for (int k = i ; k <= i + 48; k += 3){
-        for (int l = j ; l <= j + 48; l += 3) {
+      for (int k = i ; k < i + 48; k += 3){
+        for (int l = j ; l < j + 48; l += 3) {
          sumR += ImgIn[k * nW +l];
          sumV += ImgIn[k * nW +(l + 1)];
          sumB += ImgIn[k * nW +(l+ 2)];
       
         }}
 
-        for (int k = i ; k <= i + 48; k += 3){
-        for (int l = j ; l <= j + 48; l += 3) {
+        for (int k = i ; k < i + 48; k += 3){
+        for (int l = j ; l < j + 48; l += 3) {
             ImgOut[k * nW +l] = (sumR / (48 * 5) ) > 255 ? 255 : sumR / (48 * 5) ;
             ImgOut[k * nW +l + 1] = (sumV / (48 * 5)) > 255 ? 255 : sumV / (48 * 5)  ;
             ImgOut[k * nW +l + 2] = (sumB / (48 * 5)) > 255 ? 255 : sumB / (48 * 5)  ;
