@@ -1,5 +1,3 @@
-// test_couleur.cpp : Seuille une image en niveau de gris
-
 #include <stdio.h>
 #include "image_ppm.h"
 
@@ -7,17 +5,16 @@
 int main(int argc, char* argv[])
 {
     char cNomImgLue[250], cNomImgEcrite[250];
-    int nH, nW, nTaille, X;
+    int nH, nW, nTaille;
 
-    if (argc < 4)
+    if (argc < 3)
     {
-        printf("Usage: ImageIn.pgm ImageOut.pgm Nb_répétition \n");
+        printf("Usage: ImageIn.pgm ImageOut.pgm \n");
         exit(1);
     }
 
     sscanf(argv[1], "%s", cNomImgLue);
     sscanf(argv[2], "%s", cNomImgEcrite);
-    sscanf(argv[3], "%d", &X);
 
     //sscanf(argv[3], "%d", &S);
 
@@ -30,8 +27,7 @@ int main(int argc, char* argv[])
     lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
     allocation_tableau(ImgOut, OCTET, nTaille);
 
-    int cpt =0;
-    while(cpt < X){
+  
         for (int i = 0; i < nH; i++)
             for (int j = 0; j < nW; j++)
             {
@@ -61,9 +57,6 @@ int main(int argc, char* argv[])
                 else
                     ImgOut[i * nW + j] = ImgIn[i * nW + j];
             }
-        cpt++;
-    }
-
             
     
 
