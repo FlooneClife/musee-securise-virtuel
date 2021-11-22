@@ -29,8 +29,6 @@ int main(int argc, char *argv[])
 
   int pxi = 0;
   int pxj = 0;
-  int taillei, taillej = 0;
-  bool taillejmax = false;
 
   for (int i = 0; i < nH * 3; i += nbBlocs * 3)
   {
@@ -40,14 +38,9 @@ int main(int argc, char *argv[])
       ImgOut[pxi * (nW/nbBlocs) + (pxj + 1)] = ImgIn[i * nW + (j + 1)];
       ImgOut[pxi * (nW/nbBlocs) + (pxj + 2)] = ImgIn[i * nW + (j + 2)];
       pxj += 3;
-      if(!taillejmax) {
-        taillej++;
-      }
     }
     pxi += 3;
     pxj = 0;
-    taillejmax = true;
-    taillei++;
   }
 
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nH/nbBlocs, nW/nbBlocs);
