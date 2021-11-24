@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   int nTaille3 = nTaille * 3;
   allocation_tableau(ImgIn, OCTET, nTaille3);
   lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
-  allocation_tableau(ImgOut, OCTET, nTaille3/(2*nbBlocs);
+  allocation_tableau(ImgOut, OCTET, nTaille3/(2*nbBlocs));
 
   int pxi = 0;
   int pxj = 0;
