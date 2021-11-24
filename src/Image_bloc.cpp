@@ -157,19 +157,19 @@ int main(int argc, char *argv[])
 
 
   printf("Creation de la nouvelle image 4x4 ...\n");
-  char nomOut[250]= "Bloc.ppm";
+  char nomOut[250]= "Bloc4.ppm";
 //  copie(nTaille3, ImgIn,ImgOut);
   Bloc(nH,nW,ImgIn,ImgOut);
   ecrire_image_ppm(nomOut, ImgOut, nH, nW);
 
  printf("Creation de la nouvelle image 8x8...\n");
-  char nomOut3[250]= "BlocV3.ppm";
+  char nomOut3[250]= "Bloc8.ppm";
 //  copie(nTaille3, ImgIn,ImgOut);
   BlocV3(nH,nW,ImgIn,ImgOut3);
   ecrire_image_ppm(nomOut3, ImgOut3, nH, nW);
  
   printf("Creation de la nouvelle image 16x16...\n");
-  char nomOut2[250]= "BlocV2.ppm";
+  char nomOut2[250]= "Bloc16.ppm";
 //  copie(nTaille3, ImgIn,ImgOut);
   BlocV2(nH,nW,ImgIn,ImgOut2);
   ecrire_image_ppm(nomOut2, ImgOut2, nH, nW);
