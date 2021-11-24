@@ -8,6 +8,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
+
 
 using namespace std;
 
@@ -105,16 +107,20 @@ void Dechiffrement(int nTaille3,OCTET* ImgOut, vector<int> tabKey){
 int main(int argc, char *argv[])
 {
     char cNomImgLue[250], cNomImgEcrite[250];
-    int nH, nW, nTaille, nR, nG, nB;
+    int nH, nW, nTaille, nR, nG, nB ,D ;
 
-    if (argc != 2)
+    if (argc != 3)
     {
-        printf("Usage: ImageIn.ppm \n");
+        printf("Usage: ImageIn.ppm  Chiffre\n");        
+        printf("0 = Chiffrement et Déchiffrement\n");
+        printf("1 = Chiffrement \n");
+        printf("2 = Déchiffrement\n");
+
         exit(1);
     }
 
     sscanf(argv[1], "%s", cNomImgLue);
-    //sscanf(argv[2], "%s", cNomImgEcrite);
+    sscanf(argv[2], "%d", &D);
 
     OCTET *ImgIn, *ImgOut, *ImgOut2;
 
@@ -156,19 +162,75 @@ int main(int argc, char *argv[])
   monFlux.close();
 
 
+ifstream fichier(nomFichier.c_str());  //Ouverture d'un fichier en lecture
 
-  printf("Chiffrement ...\n");
-  char nomOut[250]= "Chiffrement.ppm";
-  copie(nTaille3, ImgIn,ImgOut);
-  Chiffrement(nTaille3,ImgOut,  tabKey );
-  ecrire_image_ppm(nomOut, ImgOut, nH, nW);
+int TABkey[TAILLE];
+
+if(fichier)
+{
+    //Tout est prêt pour la lecture. 
+
+    string ligne; //Une variable pour stocker les lignes lues
+         int i; int val;         
+
+      while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
+      {
+         cout << ligne << endl;
+         //fichier>>i;
+         //fichier>>val;
+        //TABkey[i]=val;
+        //printf("i %i %i \n",i,val );
+
+      }
+}
+else
+{
+    cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
+}
+
+ fichier.close();
+
+for (int i=0;i<TAILLE;i++){
+  //  printf("TABkey[%i] =%i \n",i,TABkey[i] );
+}
+
+switch (D){
+    case 0:{
+         printf("Chiffrement ...\n");
+          char nomOut[250]= "Chiffrement.ppm";
+          copie(nTaille3, ImgIn,ImgOut);
+          Chiffrement(nTaille3,ImgOut,  tabKey );
+          ecrire_image_ppm(nomOut, ImgOut, nH, nW);
 
 
-  printf("Déchiffrement ... \n");
-  copie(nTaille3, ImgOut,ImgOut2 );
-  Dechiffrement(nTaille3,ImgOut2,  tabKey );
-  char nomOut1[250]= "Dechiffrement.ppm";
-  ecrire_image_ppm(nomOut1, ImgOut2, nH,  nW );
+          printf("Déchiffrement ... \n");
+          copie(nTaille3, ImgOut,ImgOut2 );
+          Dechiffrement(nTaille3,ImgOut2,  tabKey );
+          char nomOut1[250]= "Dechiffrement.ppm";
+          ecrire_image_ppm(nomOut1, ImgOut2, nH,  nW );
+          break;
+      }
+    case 1:
+        {
+          printf("Chiffrement ...\n");
+          char nomOut2[250]= "Chiffrement.ppm";
+          copie(nTaille3, ImgIn,ImgOut);
+          Chiffrement(nTaille3,ImgOut,  tabKey );
+          ecrire_image_ppm(nomOut2, ImgOut, nH, nW);
+          break;
+        }
+
+    case 2:{
+            
+          printf("Déchiffrement ... \n");
+          copie(nTaille3, ImgIn,ImgOut );
+          Dechiffrement(nTaille3,ImgOut,  tabKey );
+          char nomOut3[250]= "Dechiffrement.ppm";
+          ecrire_image_ppm(nomOut3, ImgOut, nH,  nW );
+          break;
+      }
+}
+ 
 
 
 
