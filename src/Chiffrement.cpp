@@ -172,13 +172,15 @@ if(fichier)
 
     string ligne; //Une variable pour stocker les lignes lues
          int i; int val;         
-
+        fichier>>i;
+         fichier>>val;
+        TABkey[i]=val;
       while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
       {
-         cout << ligne << endl;
-         //fichier>>i;
-         //fichier>>val;
-        //TABkey[i]=val;
+        // cout << ligne << endl;
+         fichier>>i;
+         fichier>>val;
+        TABkey[i]=val;
         //printf("i %i %i \n",i,val );
 
       }
@@ -191,7 +193,7 @@ else
  fichier.close();
 
 for (int i=0;i<TAILLE;i++){
-  //  printf("TABkey[%i] =%i \n",i,TABkey[i] );
+    printf("TABkey[%i] =%i \n",i,TABkey[i] );
 }
 
 switch (D){
