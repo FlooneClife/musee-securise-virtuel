@@ -14,7 +14,7 @@ using namespace std;
 
 int const SEED = 1000;
 int const TAILLE = 500;
-int const nbBlocs = 20;
+int nbBlocs;
 
 void copie(int nTaille, OCTET *ImgIn, OCTET *ImgOut)
 {
@@ -208,14 +208,15 @@ int main(int argc, char *argv[])
     char cNomImgLue[250], cNomImgEcrite[250];
     int nH, nW, nTaille, nR, nG, nB, D;
 
-    if (argc != 3)
+    if (argc != 4)
     {
-        printf("Usage: ImageIn.ppm ImageOut.ppm\n");
+        printf("Usage: ImageIn.ppm ImageOut.ppm tailleBlocs\n");
         exit(1);
     }
 
     sscanf(argv[1], "%s", cNomImgLue);
     sscanf(argv[2], "%s", cNomImgEcrite);
+    sscanf(argv[3], "%d", &nbBlocs);
 
     OCTET *ImgIn, *ImgBloc, *ImgMini;
 
@@ -262,8 +263,8 @@ int main(int argc, char *argv[])
 
     fichier.close();
 
-    //conversion en blocs de 20x20
-    printf("Conversion en blocs de 20x20 pixels...\n");
+    //conversion en blocs
+    printf("Conversion en blocs de %dx%d pixels...\n", nbBlocs, nbBlocs);
     Bloc(nH, nW, ImgIn, ImgBloc);
 
     //conversion en minis blocs de 1x1
