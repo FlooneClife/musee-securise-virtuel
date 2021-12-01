@@ -20,7 +20,6 @@ ImageViewer::ImageViewer(QWidget *parent) :
     ui->setupUi(this);
 
     openAct = ui->openAct;
-    printAct = ui->printAct;
     exitAct = ui->exitAct;
     zoomInAct = ui->zoomInAct;
     zoomOutAct = ui->zoomOutAct;
@@ -44,7 +43,6 @@ ImageViewer::ImageViewer(QWidget *parent) :
     resize(900, 900);
 
     connect(openAct,SIGNAL(triggered()),this,SLOT(open()));
-    connect(printAct, SIGNAL(triggered()), this, SLOT(print()));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
     connect(zoomInAct, SIGNAL(triggered()), this, SLOT(zoomIn()));
     connect(zoomOutAct, SIGNAL(triggered()), this, SLOT(zoomOut()));
@@ -100,30 +98,12 @@ void ImageViewer::open()
          imageLabel->setPixmap(QPixmap::fromImage(image));
          scaleFactor = 1.0;
 
-         printAct->setEnabled(true);
          fitToWindowAct->setEnabled(true);
          updateActions();
 
          if (!fitToWindowAct->isChecked())
              imageLabel->adjustSize();
     }
-}
-
-void ImageViewer::print()
-{
-    Q_ASSERT(imageLabel->pixmap());
-#ifndef QT_NO_PRINTER
-    QPrintDialog dialog(&printer, this);
-    if (dialog.exec()) {
-        QPainter painter(&printer);
-        QRect rect = painter.viewport();
-        QSize size = imageLabel->pixmap()->size();
-        size.scale(rect.size(), Qt::KeepAspectRatio);
-        painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
-        painter.setWindow(imageLabel->pixmap()->rect());
-        painter.drawPixmap(0, 0, *imageLabel->pixmap());
-    }
-#endif
 }
 
 void ImageViewer::zoomIn()
@@ -159,10 +139,21 @@ void ImageViewer::select() {
 void ImageViewer::decipher() {
     std::string str = fileName.toStdString();
     const char* fileNameIn = str.c_str();
-    char* fileEnd = "dechiffre.ppm";
+    char* fileEnd = ".Dechiffre.ppm";
     char* fileNameOut;
     strcpy(fileNameOut, fileNameIn);
     strcat(fileNameOut, fileEnd);
 
-    Dechiffrage::lancerDechiffrage(fileNameIn, fileNameOut, 20);
+    printf("%s\n", fileNameIn);
+    lancerDechiffrage((char*)fileNameIn, fileNameOut, 20);
+
+    QImage image(fileNameOut);
+    imageLabel->setPixmap(QPixmap::fromImage(image));
+    scaleFactor = 1.0;
+
+    fitToWindowAct->setEnabled(true);
+    updateActions();
+
+    if (!fitToWindowAct->isChecked())
+        imageLabel->adjustSize();
 }
