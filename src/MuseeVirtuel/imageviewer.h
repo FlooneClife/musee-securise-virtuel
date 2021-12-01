@@ -27,7 +27,6 @@ public:
 
 private slots:
     void open();
-    void print();
     void zoomIn();
     void zoomOut();
     void normalSize();
@@ -42,7 +41,6 @@ private:
     QLabel *imageLabel;
     QScrollArea *scrollArea;
     QAction *openAct;
-    QAction *printAct;
     QAction *exitAct;
     QAction *zoomInAct;
     QAction *zoomOutAct;
