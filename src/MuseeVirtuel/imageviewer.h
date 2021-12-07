@@ -2,6 +2,7 @@
 #define IMAGEVIEWER_H
 
 #include <QMainWindow>
+#include <QRubberBand>
 #ifndef QT_NO_PRINTER
 #include <QPrinter>
 #endif
@@ -52,9 +53,20 @@ private:
 
     double scaleFactor;
 
+    bool selectionStarted;
+    QRect selectionRect;
+
+    QRubberBand* rubberBand;
+    QPoint origin;
+
     void updateActions();
     void scaleImage(double factor);
     void adjustScrollBar(QScrollBar *scrollBar, double factor);
+
+protected:
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
 #ifndef QT_NO_PRINTER
     QPrinter printer;
