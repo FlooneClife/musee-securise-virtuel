@@ -87,22 +87,22 @@ void ImageViewer::adjustScrollBar(QScrollBar *scrollBar, double factor)
 void ImageViewer::open()
 {
     fileName = QFileDialog::getOpenFileName(this,
-                                     tr("Open File"), QDir::currentPath());
+                                            tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
-         QImage image(fileName);
-         if (image.isNull()) {
-             QMessageBox::information(this, tr("Image Viewer"),
-                                      tr("Cannot load %1.").arg(fileName));
-             return;
-         }
-         imageLabel->setPixmap(QPixmap::fromImage(image));
-         scaleFactor = 1.0;
+        QImage image(fileName);
+        if (image.isNull()) {
+            QMessageBox::information(this, tr("Image Viewer"),
+                                     tr("Cannot load %1.").arg(fileName));
+            return;
+        }
+        imageLabel->setPixmap(QPixmap::fromImage(image));
+        scaleFactor = 1.0;
 
-         fitToWindowAct->setEnabled(true);
-         updateActions();
+        fitToWindowAct->setEnabled(true);
+        updateActions();
 
-         if (!fitToWindowAct->isChecked())
-             imageLabel->adjustSize();
+        if (!fitToWindowAct->isChecked())
+            imageLabel->adjustSize();
     }
 }
 
@@ -134,6 +134,22 @@ void ImageViewer::fitToWindow()
 
 void ImageViewer::select() {
 
+}
+
+void ImageViewer::mousePressEvent(QMouseEvent *e){
+    origin = e->pos();
+    if (!rubberBand)
+        rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
+    rubberBand->setGeometry(QRect(origin, QSize()));
+    rubberBand->show();
+}
+
+void ImageViewer::mouseMoveEvent(QMouseEvent *e){
+    rubberBand->setGeometry(QRect(origin, e->pos()).normalized());
+}
+
+void ImageViewer::mouseReleaseEvent(QMouseEvent *e){
+//    rubberBand->hide();
 }
 
 void ImageViewer::decipher() {
